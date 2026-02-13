@@ -155,7 +155,9 @@ Application will be available at:
 http://127.0.0.1:5000
 ````
 ### 7. Creating the First Admin
-Since the admin panel and moderation features require the Admin role, create your first administrative account via the Flask shell:
+**Note:** On the first launch, the very first registered user is automatically assigned the `admin` role. 
+
+If you need to create an admin manually via Flask Shell 
 ```bash
 flask shell
 ```
