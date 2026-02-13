@@ -34,7 +34,8 @@ def register():
         if not is_valid(email):
             return redirect(url_for('posts.index', _anchor="registerModal", error="Email address invalid"))
         password = request.form['password']
-        role = "user"
+        user_count=User.query.count()
+        role = "admin" if user_count == 0 else "user"
         user = User(username=username, password_hash=generate_password_hash(password), email=email, role=role)
         try:
             db.session.add(user)
