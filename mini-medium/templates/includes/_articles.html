@@ -1,0 +1,98 @@
+{% for post in pagination.items %}
+<article class="post-card mb-5 pb-5 border-bottom">
+    <div class="post-meta mb-3 d-flex align-items-center">
+        <img src="{{ post.author.get_avatar(32) }}" class="rounded-circle me-2 border" alt="avatar">
+
+        {% if session.get('user_id') == post.author.id %}
+            <span class="fw-semibold small">{{ post.author.username }} (you)</span>
+        {% else %}
+            {% with user_obj=post.author, unique_id='post' ~ post.id %}
+                {% include 'includes/_user_dropdown.html' %}
+            {% endwith %}
+        {% endif %}
+
+        <span class="text-muted small mx-2">•</span>
+        <span class="text-muted small">
+            {{ post.updated_at.strftime('%d.%m.%Y %H:%M') if post.updated_at
+               else (post.created_at.strftime('%d.%m.%Y %H:%M') if post.created_at else 'No date') }}
+        </span>
+    </div>
+
+    <a href="#" class="text-decoration-none text-dark d-block mb-3" data-bs-toggle="modal" data-bs-target="#readMoreModal{{ post.id }}">
+        <h2 class="post-title fw-bold mb-2" style="font-family: 'Lora', serif;">{{ post.title }}</h2>
+        <p class="post-excerpt text-muted mb-2">{{ post.content | truncate(160) }}</p>
+        <span class="text-dark fw-bold small">Read more...</span>
+    </a>
+
+    {% include 'includes/_post_modal.html' %}
+
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="post-actions d-flex align-items-center gap-3">
+            <form action="{{ url_for('posts.like_post', post_id=post.id) }}" method="POST" style="display:inline;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-link text-decoration-none p-0 shadow-none d-flex align-items-center">
+                    {% set user_liked = post.likes | selectattr('user_id', 'equalto', session.get('user_id')) | list %}
+                    <span class="fs-5">{{ '❤️' if user_liked else '🤍' }}</span>
+                    <span class="ms-1 text-dark small">{{ post.likes | length }}</span>
+                </button>
+            </form>
+
+            <button class="btn btn-link text-decoration-none text-muted p-0 shadow-none d-flex align-items-center"
+                    type="button" data-bs-toggle="collapse" data-bs-target="#comments-{{ post.id }}">
+                <span class="fs-5">💬</span>
+                <span class="ms-1 small text-dark">{{ post.comments | length }}</span>
+            </button>
+        </div>
+
+        <div class="post-tag">
+            <span class="badge bg-light text-dark rounded-pill fw-normal border">Article</span>
+        </div>
+    </div>
+
+    <div class="collapse mt-4" id="comments-{{ post.id }}">
+        <div class="card card-body bg-light border-0 shadow-sm" style="border-radius: 15px;">
+            <h6 class="fw-bold mb-3">Comments</h6>
+
+            {% for comment in post.comments %}
+            <div class="d-flex justify-content-between align-items-start mb-3 border-bottom pb-2">
+                <div class="d-flex gap-2">
+                    <img src="{{ comment.author.get_avatar(24) }}" class="rounded-circle border" alt="avatar" style="width: 24px; height: 24px;">
+
+                    <div class="comment-content">
+                        <div class="mb-1">
+                            {% if session.get('user_id') == comment.user_id %}
+                                <span class="fw-bold small">{{ comment.author.username }}</span>
+                            {% else %}
+                                {% with user_obj=comment.author, unique_id='comm' ~ comment.id %}
+                                    {% include 'includes/_user_dropdown.html' %}
+                                {% endwith %}
+                            {% endif %}
+                            <span class="small ms-1">{{ comment.content }}</span>
+                        </div>
+                        <span class="text-muted" style="font-size: 0.7rem;">{{ comment.created_at.strftime('%d.%m %H:%M') }}</span>
+                    </div>
+                </div>
+
+                {% if session.get('role') in ['admin', 'moderator'] or session.get('user_id') == comment.user_id %}
+                <form action="{{ url_for('comment.delete_comment', comment_id=comment.id) }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-sm text-muted btn-link p-0 text-decoration-none hover-danger">
+                        <small>Delete</small>
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <form action="{{ url_for('comment.add_comment', post_id=post.id) }}" method="POST" class="mt-2">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="input-group input-group-sm">
+                    <input type="text" name="comment" class="form-control border-0 shadow-none bg-white"
+                           placeholder="Write a response..." required style="border-radius: 20px 0 0 20px; padding-left: 15px;">
+                    <button class="btn btn-dark px-3" type="submit" style="border-radius: 0 20px 20px 0;">Publish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</article>
+{% endfor %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5" style="max-width: 720px;">
+    <div class="profile-header text-center mb-5">
+        <img src="{{ user.get_avatar(120) }}"
+             class="rounded-circle border shadow-sm mb-3"
+             alt="{{ user.username }}"
+             style="width: 120px; height: 120px; object-fit: cover;">
+
+        <h2 class="fw-bold mb-1" style="letter-spacing: -1px;">{{ user.username }}</h2>
+        <p class="text-muted small mb-3">
+            <span class="badge bg-light text-dark border fw-normal">{{ user.role }}</span>
+        </p>
+
+        <div class="d-flex justify-content-center gap-4 mb-4 text-muted small">
+            <div><strong class="text-dark">{{ user.posts|length }}</strong> Stories</div>
+            <div><strong class="text-dark">{{ user.followers|length }}</strong> Followers</div>
+        </div>
+
+        <div class="follow-action">
+            {% if session.get('user_id') != user.id %}
+            <form action="{{ url_for('follow.follow', user_id=user.id) }}" method="POST" class="d-inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                {% if is_following %}
+                <button type="submit" class="btn btn-outline-secondary rounded-pill px-4 btn-sm shadow-none">
+                    Following
+                </button>
+                {% else %}
+                <button type="submit" class="btn btn-dark rounded-pill px-4 btn-sm shadow-none">
+                    Follow
+                </button>
+                {% endif %}
+            </form>
+            {% endif %}
+        </div>
+        <hr class="mt-5 opacity-5">
+    </div>
+
+    <div class="articles-section">
+        <h4 class="mb-4 fw-bold h5">Latest stories</h4>
+
+        {% if posts %}
+            {% include 'includes/_articles.html' %}
+
+            {% with endpoint='auth.profile', user_id=user.id %}
+                {% include 'includes/_pagination.html' %}
+            {% endwith %}
+        {% else %}
+            <div class="text-center py-5 bg-light rounded-4">
+                <p class="text-muted mb-0">This author hasn't published any stories yet.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
+{% endblock %}

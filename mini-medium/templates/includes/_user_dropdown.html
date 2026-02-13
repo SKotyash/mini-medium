@@ -1,0 +1,85 @@
+<div class="dropdown d-inline">
+    {% if session.get('user_id') == user_obj.id %}
+        <span class="fw-semibold small text-dark">{{ user_obj.username }} (you)</span>
+    {% else %}
+        <button class="btn btn-link p-0 border-0 text-decoration-none text-dark fw-semibold small shadow-none"
+                type="button"
+                id="userMenu{{ user_obj.id }}{{ unique_id }}"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+            {{ user_obj.username }}
+        </button>
+
+        <ul class="dropdown-menu shadow border-0 p-2"
+            aria-labelledby="userMenu{{ user_obj.id }}{{ unique_id }}"
+            style="z-index: 3000; border-radius: 12px; min-width: 200px;">
+
+            <li class="px-3 py-2 d-flex align-items-center gap-2 border-bottom mb-2">
+                <img src="{{ user_obj.get_avatar(32) }}" class="rounded-circle border" alt="av">
+                <span class="fw-bold small text-truncate">{{ user_obj.username }}</span>
+            </li>
+
+            <li>
+                <a class="dropdown-item rounded-3" href="{{ url_for('auth.profile', user_id=user_obj.id) }}">
+                    👤 Go to profile
+                </a>
+            </li>
+
+            {% if session.get('role') in ['admin', 'moderator'] %}
+                <li class="dropdown-header small text-uppercase fw-bold text-muted opacity-75 mt-2">Moderation</li>
+
+                {% if not user_obj.is_muted %}
+                <li>
+                    <form action="{{ url_for('admin.mute', user_id=user_obj.id) }}" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="dropdown-item text-warning rounded-3 small">⏳ Mute 24h</button>
+                    </form>
+                </li>
+                {% else %}
+                <li>
+                    <form action="{{ url_for('admin.unmute', user_id=user_obj.id) }}" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="dropdown-item text-success rounded-3 small">🔊 Unmute</button>
+                    </form>
+                </li>
+                {% endif %}
+
+                {% if not user_obj.is_banned %}
+                <li>
+                    <form action="{{ url_for('admin.ban', user_id=user_obj.id) }}" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="dropdown-item text-danger rounded-3 small">🚫 Permanent ban</button>
+                    </form>
+                </li>
+                {% else %}
+                <li>
+                    <form action="{{ url_for('admin.unban', user_id=user_obj.id) }}" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="dropdown-item text-success rounded-3 small">✅ Unban user</button>
+                    </form>
+                </li>
+                {% endif %}
+
+                {% if session.get('role') == 'admin' %}
+                    {% if user_obj.role in ['moderator', 'admin'] %}
+                        {% if user_obj.role != 'admin' %} {# Адмін не може понизити адміна #}
+                        <li>
+                            <form action="{{ url_for('admin.demote', user_id=user_obj.id) }}" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="dropdown-item text-warning rounded-3 small">📉 Demote to user</button>
+                            </form>
+                        </li>
+                        {% endif %}
+                    {% else %}
+                        <li>
+                            <form action="{{ url_for('admin.promote', user_id=user_obj.id) }}" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="dropdown-item text-primary rounded-3 small">🛡️ Promote to mod</button>
+                            </form>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </ul>
+    {% endif %}
+</div>

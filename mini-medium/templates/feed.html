@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="container my-5" style="max-width: 720px;">
+    <div class="mb-5 border-bottom pb-3">
+        <h1 class="fw-bold h2" style="letter-spacing: -1px;">For you</h1>
+        <p class="text-muted small">Stories from the people you follow</p>
+    </div>
+
+    {% if posts %}
+        {% include 'includes/_articles.html' %}
+
+        {% with endpoint='posts.feed' %}
+            {% include 'includes/_pagination.html' %}
+        {% endwith %}
+    {% else %}
+        <div class="text-center py-5">
+            <div class="mb-4" style="font-size: 3rem;">🕊️</div>
+            <h4 class="fw-bold">Your feed is empty</h4>
+            <p class="text-muted">Follow some authors in the <a href="{{ url_for('posts.index') }}" class="text-dark">Explore</a> section to see their latest stories here.</p>
+        </div>
+    {% endif %}
+</main>
+{% endblock %}

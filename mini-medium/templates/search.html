@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="container my-5" style="max-width: 720px;">
+    {% if query %}
+    <div class="mb-5">
+        <h2 class="fw-bold h4 border-bottom pb-3 mb-4">Results for articles "{{ query }}"</h2>
+        {% if posts %}
+            {% include 'includes/_articles.html' %}
+            {% with endpoint='posts.search', q=query %}
+                {% include 'includes/_pagination.html' %}
+            {% endwith %}
+        {% else %}
+            <p class="text-muted py-3">No articles found matching your search.</p>
+        {% endif %}
+    </div>
+
+    <div class="mb-5">
+        <h2 class="fw-bold h4 border-bottom pb-3 mb-4">Results for authors "{{ query }}"</h2>
+        {% if users %}
+        <div class="list-group list-group-flush shadow-sm rounded-4 overflow-hidden">
+            {% for user in users %}
+            <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <div class="d-flex align-items-center">
+                    <img src="{{ user.get_avatar(40) }}" class="rounded-circle border me-3" alt="avatar">
+
+                    <div class="d-flex flex-column">
+                        {% with user_obj=user, unique_id="list" ~ user.id %}
+                            {% include "includes/_user_dropdown.html" %}
+                        {% endwith %}
+                        <span class="badge bg-light text-muted fw-normal border" style="width: fit-content; font-size: 0.65rem;">{{ user.role.upper() }}</span>
+                    </div>
+                </div>
+
+                {% if session.get('user_id') != user.id %}
+                <form action="{{ url_for('follow.follow', user_id=user.id) }}" method="POST" class="d-inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                    {% if user.id in followed_ids %}
+                    <button type="submit" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-none">
+                        Following
+                    </button>
+                    {% else %}
+                    <button type="submit" class="btn btn-dark btn-sm rounded-pill px-3 shadow-none">
+                        Follow
+                    </button>
+                    {% endif %}
+                </form>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            <p class="text-muted py-3">No authors found matching your search.</p>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <h2 class="text-muted opacity-50">Type something to search...</h2>
+    </div>
+    {% endif %}
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
+{% endblock %}
+

@@ -1,0 +1,255 @@
+
+#createPostModal .form-control:focus {
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+#createPostModal textarea {
+    line-height: 1.6;
+}
+
+#createPostModal .modal-content {
+    border-radius: 15px;
+}
+.btn-auth-outline {
+    background: transparent;
+    color: #1a8917; /* Фирменный зеленый Medium */
+    border: 1px solid #1a8917;
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.btn-auth-outline:hover {
+    background-color: rgba(26, 137, 23, 0.05);
+    color: #1a8917;
+    border-color: #1a8917;
+}
+
+.btn-auth-dark {
+    background-color: #191919;
+    color: #ffffff;
+    border: 1px solid #191919;
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.btn-auth-dark:hover {
+    background-color: #000000;
+    border-color: #000000;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+
+.btn-auth-outline:focus, .btn-auth-dark:focus {
+    box-shadow: none;
+}
+
+:root {
+    --medium-green: #1a8917;
+    --medium-dark: #191919;
+    --bg-light: #fbfbfb;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--medium-dark);
+    background-color: #fff;
+    line-height: 1.6;
+}
+
+
+.nav-link {
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: var(--medium-green) !important;
+}
+
+header {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+}
+
+.fs-4 {
+    font-weight: 800 !important;
+    letter-spacing: -1px;
+}
+
+input[type="search"] {
+    background-color: #f9f9f9;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-size: 0.9rem;
+}
+
+input[type="search"]:focus {
+    background-color: #fff;
+    box-shadow: inset 0 0 0 1px #ddd;
+}
+
+.btn-auth-outline {
+    background: transparent;
+    color: var(--medium-green);
+    border: 1px solid var(--medium-green);
+    border-radius: 50px;
+    padding: 7px 18px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.btn-auth-outline:hover {
+    background-color: rgba(26, 137, 23, 0.05);
+    border-color: var(--medium-green);
+    color: var(--medium-green);
+}
+
+.btn-auth-dark {
+    background-color: var(--medium-dark);
+    color: #fff;
+    border: 1px solid var(--medium-dark);
+    border-radius: 50px;
+    padding: 7px 18px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.btn-auth-dark:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+
+.modal-content {
+    border-radius: 12px !important;
+}
+
+.modal-body h2 {
+    font-family: 'Lora', serif;
+    letter-spacing: -0.5px;
+}
+
+.form-control.rounded-pill {
+    padding: 10px 20px;
+    border: 1px solid #eee;
+    background-color: #f9f9f9;
+}
+
+.form-control:focus {
+    background-color: #fff;
+    border-color: #ccc;
+    box-shadow: none;
+}
+
+.post-card {
+    border-color: #eee !important;
+}
+
+.post-title {
+    font-family: 'Lora', serif;
+    font-size: 1.5rem;
+    color: var(--medium-dark);
+}
+
+.dropdown-menu {
+    z-index: 9999 !important;
+}
+
+
+.modal-body {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+
+.small {
+    font-size: 0.85rem !important;
+}
+
+.fw-semibold {
+    font-weight: 600 !important;
+}
+
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+.btn-follow {
+    border-radius: 99px;
+    padding: 6px 20px;
+    font-size: 0.9rem;
+    font-weight: 400;
+    transition: all 0.2s ease;
+    border: 1px solid #1a1a1a;
+}
+
+.btn-follow.follow {
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
+.btn-follow.follow:hover {
+    background-color: #000;
+    border-color: #000;
+}
+
+
+.btn-follow.following {
+    background-color: transparent;
+    color: #6b6b6b;
+    border-color: #6b6b6b;
+}
+
+.btn-follow.following:hover {
+    color: #1a1a1a;
+    border-color: #1a1a1a;
+}
+
+
+.btn-follow.following:hover::after {
+
+}
+#notificationDropdown::after {
+    display: none;
+}
+
+.notification-items::-webkit-scrollbar {
+    width: 4px;
+}
+
+.notification-items::-webkit-scrollbar-thumb {
+    background: #e0e0e0;
+    border-radius: 10px;
+}
+
+.dropdown-item:active {
+    background-color: #f8f9fa;
+    color: #000;
+}
+.unread-note {
+    background-color: #f0f2f5 !important;
+    transition: background-color 0.3s ease;
+}
+
+.unread-note:hover {
+    background-color: #e4e6e9 !important;
+}
+
+.read-note {
+    background-color: #ffffff !important;
+}
+.btn-outline-secondary:hover svg {
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+}
