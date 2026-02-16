@@ -5,7 +5,7 @@ The project was built as a backend-focused pet project to practice Flask,
 application architecture, and real-world backend patterns.
 
 ---
-#Live-Demo
+# Live-Demo
 
 https://mini-medium-remki.onrender.com/
 ---
