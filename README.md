@@ -92,7 +92,7 @@ The project follows a modular architecture:
 
 ### 1. Clone repository
 ````
-git clone https://github.com/your-username/mini-medium.git
+git clone https://github.com/SKotyash/mini-medium.git
 cd mini-medium
 ````
 ### 2. Create virtual environment
